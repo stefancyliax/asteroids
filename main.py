@@ -3,6 +3,7 @@ from constants import *
 from player import *
 from asteroidfield import *
 from shot import Shot
+from explosion import Explosion # Import Explosion
 import sys
 
 def main():
@@ -19,11 +20,13 @@ def main():
     drawable = pygame.sprite.Group() 
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    explosions = pygame.sprite.Group() # Create explosions group
 
     Player.containers = (updatable, drawable)
     Asteroid.containers = (updatable, drawable, asteroids)
     AsteroidField.containers = (updatable)
     Shot.containers = (updatable, drawable, shots) 
+    Explosion.containers = (updatable, drawable, explosions) # Set Explosion containers
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroidfield1 = AsteroidField()
@@ -45,6 +48,7 @@ def main():
         for obj in asteroids:
             for shot in shots:
                 if shot.collision(obj):
+                    Explosion(center=obj.position, animation_speed=10) # Create Explosion instance
                     obj.split()
                     shot.kill()
 
