@@ -1,5 +1,6 @@
 from constants import *
 from circleshape import *
+from shot import Shot
 # Removed: from main import *
 
 class Player(CircleShape):
