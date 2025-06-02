@@ -4,14 +4,11 @@ import random
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
-       super().__init__(x,y, radius)
-
-    def draw(self, screen, color = "white", line_width = 2 ):
-        pygame.draw.circle(screen, color, self.position, self.radius, line_width)
-        return
+       super().__init__(x, y, radius, self.containers)
 
     def update(self, dt):
         self.position += self.velocity * dt
+        self.keep_on_screen(SCREEN_WIDTH, SCREEN_HEIGHT) # Screen wrap
 
     def split(self):
         self.kill()

@@ -1,12 +1,13 @@
 from constants import *
 from circleshape import *
-from main import *
+# Removed: from main import *
 
 class Player(CircleShape):
-    def __init__(self, x, y):
-       super().__init__(x,y,PLAYER_RADIUS)
+    def __init__(self, x, y, shoot_sound_obj): # Added shoot_sound_obj
+       super().__init__(x, y, PLAYER_RADIUS, self.containers)
        self.rotation = 0
        self.shot_timer = 0
+       self.shoot_sound = shoot_sound_obj # Store shoot_sound_obj
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -37,7 +38,8 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE] and not self.shot_timer > 0:
             self.shoot()
-                
+
+        self.keep_on_screen(SCREEN_WIDTH, SCREEN_HEIGHT) # Screen wrap
          
 
     def move(self, dt):
@@ -47,4 +49,5 @@ class Player(CircleShape):
     def shoot(self):
         shot = Shot(self.position.x, self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED
-        self.shot_timer = 0.3
+        self.shot_timer = PLAYER_SHOOT_COOLDOWN
+        self.shoot_sound.play() # Play the sound
